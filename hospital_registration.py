@@ -7,13 +7,13 @@ import time
 import unicodedata
 
 import requests
-
+# 文章地址：https://zhuanlan.zhihu.com/p/62784273
 
 def printf(*args):
     """
-    格式化打印
-    :param args: list
-    :return: None
+        格式化打印
+        :param args: list
+        :return: None
     """
     width = [5, 25, 50, 10, 10]
 
@@ -25,7 +25,6 @@ def printf(*args):
     fmt_str = '|'.join(['{%s:<%s}' % (i, width[i] - wide_chars(j)) for i, j in enumerate(args)])
     print(fmt_str.format(*args))
     return
-
 
 class Registration:
     def __init__(self):
@@ -63,11 +62,11 @@ class Registration:
 
     def request(self, method, url, **kwargs):
         """
-        请求
-        :param method: string: 'get' or 'post'
-        :param url: string
-        :param kwargs: Optional arguments that ``request`` takes
-        :return: requests.Response
+            请求
+            :param method: string: 'get' or 'post'
+            :param url: string
+            :param kwargs: Optional arguments that ``request`` takes
+            :return: requests.Response
         """
         if method == 'post':
             response = self.session.post(url, **kwargs)
@@ -80,9 +79,9 @@ class Registration:
 
     def load_conf(self, config_path):
         """
-        载入配置文件
-        :param config_path: string
-        :return: None
+            载入配置文件
+            :param config_path: string
+            :return: None
         """
         with open(config_path, 'r') as f:
             data = json.load(f)
@@ -104,8 +103,8 @@ class Registration:
 
     def get_duty_time(self):
         """
-        获取放号时间
-        :return: None
+            获取放号时间
+            :return: None
         """
         url = self.appoint_url.format(self.hospital_id, self.department_id)
         res = self.request('get', url)
@@ -133,8 +132,8 @@ class Registration:
 
     def auth_login(self):
         """
-        登录
-        :return: bool
+            登录
+            :return: bool
         """
         logging.info('开始登录')
         args = dict(mobileNo=self.mobile_no,
@@ -157,8 +156,8 @@ class Registration:
 
     def choose_doctor(self):
         """
-        选择医生
-        :return: bool
+            选择医生
+            :return: bool
         """
         logging.debug('当前挂号日期: ' + self.duty_date)
         args = dict(hospitalId=self.hospital_id,
@@ -208,8 +207,8 @@ class Registration:
 
     def get_patient_id(self):
         """
-        获取就诊人ID
-        :return: string or None
+            获取就诊人ID
+            :return: string or None
         """
         url = self.patient_form_url.format(self.hospital_id, self.department_id,
                                            self.doctor.get('doctorId'), self.doctor.get('dutySourceId'))
@@ -227,8 +226,8 @@ class Registration:
 
     def get_sms_verify_code(self):
         """
-        获取短信验证码
-        :return: bool
+            获取短信验证码
+            :return: bool
         """
         res = self.request('post', self.send_order_url, data='')
         logging.debug('response: ' + res.text)
@@ -246,9 +245,9 @@ class Registration:
 
     def get_register(self, sms_code):
         """
-        挂号
-        :param sms_code: string
-        :return: bool
+            挂号
+            :param sms_code: string
+            :return: bool
         """
         args = dict(dutySourceId=str(self.doctor.get('dutySourceId')),
                     hospitalId=self.hospital_id,
@@ -277,9 +276,9 @@ class Registration:
 
     def run(self, config_path):
         """
-        主函数
-        :param config_path: string
-        :return: None
+            主函数
+            :param config_path: string
+            :return: None
         """
         self.load_conf(config_path)
         self.get_duty_time()
